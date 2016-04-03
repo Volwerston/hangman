@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include "Printer.h"
+#include "Options.h"
 
 using namespace std;
 
@@ -41,3 +42,5 @@ extern const int FONT_WIDTH;
 extern const int FONT_HEIGHT;
 extern const int CONSOLE_WIDTH;
 extern const int CONSOLE_HEIGHT;
+
+extern Options options;

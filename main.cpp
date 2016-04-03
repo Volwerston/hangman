@@ -15,14 +15,20 @@ int main()
 {
 	setConsoleProperties();
 
-	//StartView start;
+	View* game = new StartView;
 
-	//FieldView start;
+	while (game != nullptr)
+	{
+		game->draw();
 
-	//start.draw();
+		View* current = game->handle();
 
-	OptionView start;
-	start.draw();
+		if (current != game)
+		{
+			delete game;
+			game = current;
+		}
+	}
 
 	_getch();
 	return 0;

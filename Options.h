@@ -19,6 +19,8 @@ enum class Language
 
 class Options
 {
+	friend class FieldView;
+
 	struct Word
 	{
 		string data;
@@ -47,15 +49,23 @@ class Options
 	string filePath;
 	Difficulty level;
 	int numOfWords;
-
 public:
 	Options(Language = Language::ENGLISH, Difficulty = Difficulty::EASY);
 
 	void loadDictionary();
-	void setFilePath(string);
+	void setFilePath();
 	void setLanguage(Language);
+	void setDifficulty(Difficulty);
 	string getFilePath() const;
 	Language getLanguage() const;
+
+	Difficulty getLevel() const
+	{
+		return level;
+	}
+
+	bool allChosen();
+	string chooseWord();
 
 	~Options();
 };

@@ -25,6 +25,8 @@ const int FONT_HEIGHT = 18;
 const int CONSOLE_WIDTH = 60;
 const int CONSOLE_HEIGHT = 30;
 
+Options options;
+
 void setConsoleProperties()
 {
 

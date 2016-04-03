@@ -1,12 +1,16 @@
 #pragma once
 
+#include <vector>
+
 #include "View.h"
 #include "StartView.h"
 
 class OptionView : public View
 {
-	MenuItem** menu;
+	vector<MenuItem> menu;
 	int menuCurrent;
+
+	void drawMenu();
 public:
 	OptionView();
 
@@ -14,5 +18,5 @@ public:
 
 	void draw();
 
-	~OptionView();
+	~OptionView() {};
 };

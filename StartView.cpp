@@ -6,7 +6,9 @@
 
 #include "StartView.h"
 #include "ConsoleProperties.h"
+#include "OptionView.h"
 #include "SideBar.h"
+#include "FieldView.h"
 
 using namespace std;
 
@@ -39,6 +41,8 @@ View* StartView::handle()
 {
 	bool finish = false;
 	int c;
+
+	View* current = this;
 
 	while (!finish)
 	{
@@ -76,22 +80,25 @@ View* StartView::handle()
 			switch (currentAct)
 			{
 			case Action::START:
+				current = new FieldView;
 				finish = true;
 				break;
 			case Action::OPTIONS:
+				current = new OptionView;
 				finish = true;
 				break;
 			case Action::HIGH_SCORES:
 				finish = true;
 				break;
 			case Action::EXIT:
-				exit(0);
+				current = nullptr;
+				finish = true;
 			}
 			break;
 		}
 	}
 
-	return nullptr;
+	return current;
 }
 
 void StartView::draw()
@@ -100,11 +107,5 @@ void StartView::draw()
 	setCursorAt(CONSOLE_WIDTH / 3, 0);
 	headline.print("WELCOME TO HANGMAN");
 
-	SideBar bar(0, 100);
-	bar.draw();
-
 	drawMenu();
-
-	handle();
 }
-

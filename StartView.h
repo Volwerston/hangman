@@ -10,19 +10,15 @@ struct MenuItem
 {
 	string text;
 	bool chosen;
+	int x;
+	int y;
 
-	MenuItem(string _text = "") :
+	MenuItem(string _text = "", int _x = 0, int _y = 0) :
 		text(_text),
-		chosen(false)
+		chosen(false),
+		x(_x),
+		y(_y)
 	{
-	}
-
-	MenuItem(initializer_list<string> list)
-	{
-		for (const string data: list)
-		{
-			MenuItem(data);
-		}
 	}
 };
 

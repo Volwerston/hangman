@@ -3,6 +3,12 @@
 #include "View.h"
 #include "SideBar.h"
 
+enum class Result
+{
+	VICTORY,
+	DEFEAT
+};
+
 class FieldView : public View
 {
 	SideBar info;
@@ -26,6 +32,9 @@ class FieldView : public View
 	Letter **usedLetter;
 	int sizeOfWord;
 	int numOfUsed;
+
+
+	Result getResult();
 public:
 	FieldView()
 		: info(SideBar()),
@@ -61,16 +70,17 @@ public:
 			++current;
 		}
 
-		word[4].active = true;
-		word[4].letter = 'A';
-
 	}
+
+	bool allGuessed();
 
 	void draw();
 
 	void addUsed(char);
 
-	View* handle() { return nullptr; };
+	void makeSettings();
+
+	View* handle();
 
 	~FieldView()
 	{

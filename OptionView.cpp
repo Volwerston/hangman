@@ -1,5 +1,8 @@
+#pragma once
+
 #include <conio.h>
 
+#include "FieldView.h"
 #include "OptionView.h"
 #include "ConsoleProperties.h"
 
@@ -8,24 +11,22 @@ using namespace std;
 OptionView::OptionView()
 	:menuCurrent(0)
 {
-	menu = new MenuItem*[3];
-
-	menu[0] = new MenuItem[2];
-	menu[0][0].text = "English";
-	menu[0][1].text = "Ukrainian";
-	menu[1] = new MenuItem[3];
-	menu[1][0].text = "Easy";
-	menu[1][1].text = "Medium";
-	menu[1][2].text = "Hard";
-	menu[2] = new MenuItem[2]; 
-	menu[2][0].text = "Back to menu";
-	menu[2][1].text = "New game";
+	menu.push_back(MenuItem("English", CONSOLE_WIDTH / 5, 2));
+	menu.push_back(MenuItem("Ukrainian", 3 * CONSOLE_WIDTH / 5, 2));
+	menu.push_back(MenuItem("Easy", CONSOLE_WIDTH / 5, CONSOLE_HEIGHT/3 + 2));
+	menu.push_back(MenuItem("Medium", CONSOLE_WIDTH / 5 + CONSOLE_WIDTH / 4, CONSOLE_HEIGHT/3 + 2));
+	menu.push_back(MenuItem("Hard", CONSOLE_WIDTH / 5 + (CONSOLE_WIDTH / 4)*2, CONSOLE_HEIGHT/3 + 2));
+	menu.push_back(MenuItem("Back to menu", CONSOLE_WIDTH / 6, CONSOLE_HEIGHT - 2));
+	menu.push_back(MenuItem("Start game", 4 * CONSOLE_WIDTH / 6, CONSOLE_HEIGHT - 2));
+	menu[0].chosen = true;
 }
 
 View* OptionView::handle() 
 { 
 	bool finish = false;
 	int c;
+
+	View* current = this;
 
 	while (!finish)
 	{
@@ -35,27 +36,67 @@ View* OptionView::handle()
 		case 224:
 			switch (_getch())
 			{
-			case 72: // down 
-
-				break;
-			case 80: // up
-
-				break;
 			case 75: // left
+				menu[menuCurrent].chosen = false;
+				--menuCurrent;
 
+				if (menuCurrent == -1)
+				{
+					menuCurrent = 6;
+				}
+
+				menu[menuCurrent].chosen = true;
+
+				drawMenu();
 				break;
 			case 77: //right
+				menu[menuCurrent].chosen = false;
+
+				++menuCurrent;
+
+				if (menuCurrent == 7)
+				{
+					menuCurrent = 0;
+				}
+
+				menu[menuCurrent].chosen = true;
+
+				drawMenu();
 
 				break;
 			}
 			break;
 		case VK_RETURN:
-		
+			switch (menuCurrent)
+			{
+			case 0:
+				options.setLanguage(Language::ENGLISH); 
+				break;
+			case 1:
+				options.setLanguage(Language::UKRAINIAN);
+				break;
+			case 2:
+				options.setDifficulty(Difficulty::EASY);
+				break;
+			case 3:
+				options.setDifficulty(Difficulty::MIDDLE);
+				break;
+			case 4:
+				options.setDifficulty(Difficulty::HARD);
+				break;
+			case 5:
+				current = new StartView;
+				finish = true;
+				break;
+			case 6:
+				current = new FieldView;
+				finish = true;
+			}
 			break;
 		}
 	}
 
-	return nullptr;
+	return current;
 }
 
 void OptionView::draw()
@@ -64,34 +105,28 @@ void OptionView::draw()
 
 	drawBackground(0, 0, CONSOLE_WIDTH*FONT_WIDTH, CONSOLE_HEIGHT*FONT_HEIGHT, RGB(0, 100, 200));
 
+	setCursorAt(0, 1);
 	printAtCenter("Language:", headline);
-
-	setCursorAt(CONSOLE_WIDTH/5, 2);
-	menuActive.print(menu[0][0].text);
-
-	setCursorAt(3*CONSOLE_WIDTH/5, 2);
-	menuPassive.print(menu[0][1].text);
 
 	setCursorAt(CONSOLE_WIDTH / 2, CONSOLE_HEIGHT / 3);
 	printAtCenter("Difficulty:", headline);
-	
-	setCursorAt(cursor.X, cursor.Y + 2);
 
-	for (size_t i = 0; i < 3; ++i)
-	{
-		setCursorAt(CONSOLE_WIDTH / 5 + (CONSOLE_WIDTH / 4)*i, cursor.Y);
-		menuPassive.print(menu[1][i].text);
-	}
-
-	setCursorAt(CONSOLE_WIDTH/6, CONSOLE_HEIGHT - 2);
-	menuPassive.print(menu[2][0].text);
-
-	setCursorAt(4 * CONSOLE_WIDTH / 6, CONSOLE_HEIGHT - 2);
-	menuPassive.print(menu[2][1].text);
+	drawMenu();
 }
 
-OptionView::~OptionView()
+void OptionView::drawMenu()
 {
-	for (size_t i = 0; i < 3; ++i) delete[] menu[i];
-	delete[] menu;
+	for (size_t i = 0; i < 7; ++i)
+	{
+		setCursorAt(menu[i].x, menu[i].y);
+
+		if (menu[i].chosen)
+		{
+			menuActive.print(menu[i].text);
+		}
+		else
+		{
+			menuPassive.print(menu[i].text);
+		}
+	}
 }

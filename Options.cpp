@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 #include "Options.h"
 
@@ -21,10 +23,17 @@ string Options::Word::getText() const
 Options::Options(Language _lan, Difficulty dif)
 	: language(_lan),
 	level(dif),
-	filePath(""),
-	numOfWords(20)
+	filePath("Engl_easy.txt"),
+	numOfWords(20),
+	langTemplate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 {
 	dictionary = new Word[20];
+}
+
+void Options::setLanguage(Language _lan)
+{
+	language = _lan;
+
 	if (language == Language::ENGLISH)
 	{
 		langTemplate = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -35,19 +44,44 @@ Options::Options(Language _lan, Difficulty dif)
 	}
 }
 
-Options::~Options()
+
+void Options::setFilePath()
 {
-	delete[] dictionary;
+	if (language == Language::ENGLISH)
+	{
+		if (level == Difficulty::EASY)
+		{
+			filePath = "Engl_easy.txt";
+		}
+		else if (level == Difficulty::MIDDLE)
+		{
+			filePath = "Engl_middle.txt";
+		}
+		else
+		{
+			filePath = "Engl_hard.txt";
+		}
+	}
+	else
+	{
+		if (level == Difficulty::EASY)
+		{
+			filePath = "Ua_easy.txt";
+		}
+		else if (level == Difficulty::MIDDLE)
+		{
+			filePath = "Ua_middle.txt";
+		}
+		else
+		{
+			filePath = "Ua_hard.txt";
+		}
+	}
 }
 
-void Options::setLanguage(Language _lan)
+void Options::setDifficulty(Difficulty dif)
 {
-	language = _lan;
-}
-
-void Options::setFilePath(string path)
-{
-	filePath = path;
+	level = dif;
 }
 
 Language Options::getLanguage() const
@@ -62,6 +96,9 @@ string Options::getFilePath() const
 
 void Options::loadDictionary()
 {
+
+	setFilePath();
+
 	ifstream in(filePath);
 
 	if (!in)
@@ -78,3 +115,71 @@ void Options::loadDictionary()
 		}
 	}
 }
+
+string Options::chooseWord()
+{
+	string toReturn = "";
+
+	if (!allChosen())
+	{
+		srand(time(0));
+
+		bool chosen = false;
+
+		int num = 0;
+
+		while (!chosen)
+		{
+			num = rand() % 20;
+
+			if (!dictionary[num].chosen)
+			{
+				dictionary[num].chosen = true;
+				toReturn = dictionary[num].data;
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (level == Difficulty::EASY)
+		{
+			level = Difficulty::MIDDLE;
+			loadDictionary();
+			toReturn = dictionary[0].data;
+			dictionary[0].chosen = true;
+		}
+		else if (level == Difficulty::MIDDLE)
+		{
+			level = Difficulty::HARD;
+			loadDictionary();
+			toReturn = dictionary[0].data;
+			dictionary[0].chosen = true;
+		}
+	}
+
+	return toReturn;
+}
+
+bool Options::allChosen()
+{
+	bool allUsed = true;
+
+	for (size_t i = 0; i < 20; ++i)
+	{
+		if (!dictionary[i].chosen)
+		{
+			allUsed = false;
+			break;
+		}
+	}
+
+	return allUsed;
+}
+
+Options::~Options()
+{
+	delete[] dictionary;
+}
+
+
