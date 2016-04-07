@@ -25,6 +25,9 @@ Options::Options(Language _lan, Difficulty dif)
 	level(dif),
 	filePath("Engl_easy.txt"),
 	numOfWords(20),
+	easyUsed(false),
+	middleUsed(false),
+	hardUsed(false),
 	langTemplate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 {
 	dictionary = new Word[20];
@@ -112,6 +115,12 @@ void Options::loadDictionary()
 		for (size_t i = 0; i < numOfWords; ++i)
 		{
 			in >> dictionary[i];
+			dictionary[i].chosen = false;
+		}
+
+		for (size_t i = 1; i < numOfWords; ++i)
+		{
+			dictionary[i].chosen = true;
 		}
 	}
 }
@@ -144,17 +153,33 @@ string Options::chooseWord()
 	{
 		if (level == Difficulty::EASY)
 		{
-			level = Difficulty::MIDDLE;
-			loadDictionary();
-			toReturn = dictionary[0].data;
-			dictionary[0].chosen = true;
+			if (!middleUsed)
+			{
+				level = Difficulty::MIDDLE;
+				loadDictionary();
+				toReturn = dictionary[0].data;
+				dictionary[0].chosen = true;
+			}
 		}
 		else if (level == Difficulty::MIDDLE)
 		{
-			level = Difficulty::HARD;
-			loadDictionary();
-			toReturn = dictionary[0].data;
-			dictionary[0].chosen = true;
+			if (!hardUsed)
+			{
+				level = Difficulty::HARD;
+				loadDictionary();
+				toReturn = dictionary[0].data;
+				dictionary[0].chosen = true;
+			}
+		}
+		else
+		{
+			if (!easyUsed)
+			{
+				level = Difficulty::EASY;
+				loadDictionary();
+				toReturn = dictionary[0].data;
+				dictionary[0].chosen = true;
+			}
 		}
 	}
 
@@ -171,6 +196,22 @@ bool Options::allChosen()
 		{
 			allUsed = false;
 			break;
+		}
+	}
+
+	if (allUsed == true)
+	{
+		if (level == Difficulty::EASY)
+		{
+			easyUsed = true;
+		}
+		else if (level == Difficulty::MIDDLE)
+		{
+			middleUsed = true;
+		}
+		else
+		{
+			hardUsed = true;
 		}
 	}
 

@@ -66,7 +66,6 @@
   <ItemGroup>
     <ClCompile Include="ConsoleProperties.cpp" />
     <ClCompile Include="FieldView.cpp" />
-    <ClCompile Include="Gallows.cpp" />
     <ClCompile Include="HighScoreView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -79,7 +78,6 @@
   <ItemGroup>
     <ClInclude Include="ConsoleProperties.h" />
     <ClInclude Include="FieldView.h" />
-    <ClInclude Include="Gallows.h" />
     <ClInclude Include="HighScoreView.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OptionView.h" />

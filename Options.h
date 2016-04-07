@@ -43,6 +43,10 @@ class Options
 		}
 	};
 
+	bool easyUsed;
+	bool middleUsed;
+	bool hardUsed;
+
 	Word* dictionary;
 	Language language;
 	string langTemplate;

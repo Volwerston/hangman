@@ -10,10 +10,11 @@ using namespace std;
 
 void View::drawBackground(int left, int top, int width, int height, COLORREF background)
 {
-	SelectObject(hdc, GetStockObject(DC_PEN));
 	SelectObject(hdc, GetStockObject(DC_BRUSH));
+	SelectObject(hdc, GetStockObject(DC_PEN));
 
 	SetDCBrushColor(hdc, background);
+	SetDCPenColor(hdc, background);
 
 	GetClientRect(hwnd, &rect);
 	Rectangle(hdc, left, top, left + width, top + height);

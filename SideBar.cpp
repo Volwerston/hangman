@@ -18,8 +18,6 @@ void SideBar::draw()
 	setCursorAt(left/FONT_WIDTH + 1, top/FONT_HEIGHT + 3);
 	stats.print("Score: " + string(25 - 7 - toString(score).size(), ' ') + toString(score));
 	setCursorAt(left/FONT_WIDTH + 1, top/FONT_HEIGHT + 5);
-	stats.print("Victories: " + string(25 - 11 - toString(numOfVictories).size(), ' ') + toString(numOfVictories));
-	setCursorAt(left/FONT_WIDTH + 1, top/FONT_HEIGHT + 7);
 	stats.print("Guessed letters: " + string(25 - 17 - toString(numOfLetters).size(), ' ') + toString(numOfLetters));
 }
 

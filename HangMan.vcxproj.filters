@@ -39,9 +39,6 @@
     <ClCompile Include="ConsoleProperties.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="Gallows.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="SideBar.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleProperties.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Gallows.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="SideBar.h">

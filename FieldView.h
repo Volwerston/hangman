@@ -49,6 +49,7 @@ public:
 			word[i].top = CONSOLE_HEIGHT*FONT_HEIGHT / 2;
 			word[i].width = 50;
 			word[i].height = 50;
+			//word[i].active = true;
 		}
 
 		usedLetter = new Letter*[4];

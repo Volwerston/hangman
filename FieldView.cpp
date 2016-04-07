@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <conio.h>
 
 #include "FieldView.h"
 #include "ConsoleProperties.h"
@@ -35,6 +36,10 @@ void FieldView::draw()
 			if (usedLetter[i][j].active)
 			{
 				usedLetter[i][j].draw();
+			}
+			else
+			{
+				break;
 			}
 		}
 	}
@@ -87,6 +92,7 @@ void FieldView::makeSettings()
 	}
 
 	string currWord = options.chooseWord();
+
 	sizeOfWord = currWord.size();
 
 	for (size_t i = 0; i < sizeOfWord; ++i)
@@ -118,6 +124,7 @@ void FieldView::Letter::draw()
 void FieldView::addUsed(char let)
 {
 	bool found = false;
+
 	for (size_t i = 0; i < numOfUsed; ++i)
 	{
 		if (usedLetter[i / 10][i % 10].letter == let)
@@ -133,24 +140,35 @@ void FieldView::addUsed(char let)
 		usedLetter[numOfUsed / 10][numOfUsed % 10].active = true;
 		++numOfUsed;
 
-		if (options.level == Difficulty::EASY)
+		bool isRight = false;
+
+		for (size_t i = 0; i < sizeOfWord; ++i)
 		{
-			info.life -= 3;
+			if (let == word[i].letter)
+			{
+				isRight = true;
+				break;
+			}
 		}
-		else if (options.level == Difficulty::MIDDLE)
+
+		if (!isRight)
 		{
-			info.life -= 2;
-		}
-		else
-		{
-			--info.life;
+			if (options.level == Difficulty::EASY)
+			{
+				info.life -= 3;
+			}
+			else if (options.level == Difficulty::MIDDLE)
+			{
+				info.life -= 2;
+			}
+			else
+			{
+				--info.life;
+			}
 		}
 	}
 
-	for (size_t i = 0; i < numOfUsed; ++i)
-	{
-		usedLetter[i / 10][i % 10].draw();
-	}
+		usedLetter[(numOfUsed-1)/10][(numOfUsed-1) % 10].draw();
 }
 
 Result FieldView::getResult()
@@ -161,29 +179,37 @@ Result FieldView::getResult()
 	while (!finished)
 	{
 		setCursorAt(50, 0);
-		char input = cin.get();
+
+		int input = _getch();
+
+		cout << char(input) << endl;
 
 		bool found = false;
 
 		for (size_t i = 0; i < sizeOfWord; ++i)
 		{
-			if (word[i].letter == toupper(input) && !word[i].active)
+			if (word[i].letter == toupper(char(input)))
 			{
-				++info.numOfLetters;
 				found = true;
-				word[i].active = true;
-				word[i].draw();
-				addUsed(input);
+
+				if (!word[i].active)
+				{
+					++info.numOfLetters;
+					word[i].active = true;
+					word[i].draw();
+					addUsed(toupper(char(input)));
+				}
 			}
 		}
 
 		if (found == false)
 		{
+
 			for (size_t i = 0; i < options.langTemplate.size(); ++i)
 			{
 				if (options.langTemplate[i] == toupper(input))
 				{
-					addUsed(input);
+					addUsed(toupper(char(input)));
 					break;
 				}
 			}
@@ -194,6 +220,7 @@ Result FieldView::getResult()
 		if (allGuessed())
 		{
 			cout << "You won" << endl;
+			info.life += 3;
 			res = Result::VICTORY;
 			finished = true;
 		}
@@ -214,10 +241,62 @@ View* FieldView::handle()
 
 	while (res != Result::DEFEAT)
 	{
-		++info.score;
-		info.draw();
+		info.numOfLetters = 0;
+		
+		if (options.level == Difficulty::EASY)
+		{
+			++info.score;
+		}
+		else if (options.level == Difficulty::MIDDLE)
+		{
+			info.score += 2;
+		}
+		else
+		{
+			info.score += 3;
+		}
 
-		res = getResult();
+		info.draw();
+		Difficulty cur = options.getLevel();
+		string currWord = options.chooseWord();
+		Difficulty cur1 = options.getLevel();
+
+		if (cur != cur1)
+		{
+			drawBackground(word[0].left - 1, word[0].top - 1,
+				options.numOfWords * 51, word[0].top + 51, RGB(0, 100, 200));
+		}
+
+		if (currWord == "")
+		{
+			cout << "All words are guessed!" << endl;
+			res = Result::DEFEAT;
+		}
+		else
+		{
+			sizeOfWord = currWord.size();
+
+			for (size_t i = 0; i < sizeOfWord; ++i)
+			{
+				word[i].letter = currWord[i];
+				word[i].active = true;
+				word[i].draw();
+			}
+
+			numOfUsed = 0;
+
+			for (size_t i = 0; i < numOfUsed; ++i)
+			{
+				usedLetter[i / 10][i % 10].letter = ' ';
+				usedLetter[i / 10][i % 10].active = false;
+			}
+
+			drawBackground(0, 2 * FONT_HEIGHT*CONSOLE_HEIGHT / 3, CONSOLE_WIDTH*FONT_WIDTH, CONSOLE_HEIGHT*FONT_HEIGHT,
+				RGB(0, 100, 200));
+
+
+			res = getResult();
+		}
 	}
 
 	return nullptr;
