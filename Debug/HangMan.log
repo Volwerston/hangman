@@ -1,26 +1,17 @@
-﻿Сборка начата 07.04.2016 0:41:17.
+﻿Сборка начата 07.04.2016 22:41:23.
      1>Проект "C:\Users\Юра\Local_repository\Hangman\hangman\HangMan.vcxproj" в узле 2 (целевые объекты Build).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt FieldView.cpp OptionView.cpp StartView.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt FieldView.cpp
          FieldView.cpp
      1>c:\users\юра\local_repository\hangman\hangman\fieldview.h(46): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(24): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(65): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(98): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(128): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(145): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(189): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(279): warning C4018: <: несоответствие типов со знаком и без знака
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(288): warning C4018: <: несоответствие типов со знаком и без знака
-         Создание кода...
-         Компиляция...
-         StartView.cpp
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.h(46): warning C4018: <: несоответствие типов со знаком и без знака
-         OptionView.cpp
-     1>c:\users\юра\local_repository\hangman\hangman\fieldview.h(46): warning C4018: <: несоответствие типов со знаком и без знака
-         Создание кода...
-         Пропуск... (изменения не обнаружены)
-         main.cpp
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(88): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(129): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(162): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(192): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(209): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(251): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(340): warning C4018: <: несоответствие типов со знаком и без знака
+     1>c:\users\юра\local_repository\hangman\hangman\fieldview.cpp(349): warning C4018: <: несоответствие типов со знаком и без знака
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Юра\Local_repository\Hangman\hangman\Debug\HangMan.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Юра\Local_repository\Hangman\hangman\Debug\HangMan.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Юра\Local_repository\Hangman\hangman\Debug\HangMan.lib" /MACHINE:X86 Debug\ConsoleProperties.obj
          Debug\FieldView.obj
@@ -37,4 +28,4 @@
 
 Сборка успешно завершена.
 
-Затраченное время: 00:00:06.12
+Затраченное время: 00:00:02.20

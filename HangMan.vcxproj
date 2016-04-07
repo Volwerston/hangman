@@ -87,6 +87,14 @@
     <ClInclude Include="StartView.h" />
     <ClInclude Include="View.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engl_easy.txt" />
+    <Text Include="Engl_hard.txt" />
+    <Text Include="Engl_middle.txt" />
+    <Text Include="Ua_easy.txt" />
+    <Text Include="Ua_hard.txt" />
+    <Text Include="Ua_middle.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

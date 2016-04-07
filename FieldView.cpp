@@ -8,6 +8,70 @@
 
 using namespace std;
 
+string getUserNick()
+{
+	SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE| BACKGROUND_RED);
+
+	bool properlyInserted = false;
+	int numOfFilled = 0;
+	int nameSize = 1;
+	string name;
+	int c;
+	
+	int startCursorX = cursor.X;
+
+	while (!properlyInserted)
+	{
+		c = _getch();
+
+		if (c == ' ')
+		{
+			if (name != "" && numOfFilled < nameSize)
+			{
+				name += ' ';
+				cout << " ";
+				cursor.X++;
+				numOfFilled++;
+			}
+		}
+		else if (c == VK_RETURN)
+		{
+			if (name != "")
+			{
+				properlyInserted = true;
+			}
+		}
+		else if (c == 8)
+		{
+			if (name != "")
+			{
+				name.erase(name.size() - 1, 1);
+				numOfFilled--;
+				cursor.X--;
+				SetConsoleCursorPosition(hConsole, cursor);
+				cout << " ";
+			}
+		}
+		else
+		{
+			if (numOfFilled < nameSize)
+			{
+				numOfFilled++;
+				cursor.X++;
+				name += (char)c;
+				cout << (char)c;
+			}
+		}
+		if (name == "")
+		{
+			cursor.X = startCursorX;
+			SetConsoleCursorPosition(hConsole, cursor);
+		}
+	}
+
+	return name;
+}
+
 void FieldView::draw()
 {
 	clear();
@@ -180,15 +244,13 @@ Result FieldView::getResult()
 	{
 		setCursorAt(50, 0);
 
-		int input = _getch();
-
-		cout << char(input) << endl;
+		string input = getUserNick();
 
 		bool found = false;
 
 		for (size_t i = 0; i < sizeOfWord; ++i)
 		{
-			if (word[i].letter == toupper(char(input)))
+			if (word[i].letter == input[0])
 			{
 				found = true;
 
@@ -197,19 +259,18 @@ Result FieldView::getResult()
 					++info.numOfLetters;
 					word[i].active = true;
 					word[i].draw();
-					addUsed(toupper(char(input)));
+					addUsed(input[0]);
 				}
 			}
 		}
 
 		if (found == false)
 		{
-
 			for (size_t i = 0; i < options.langTemplate.size(); ++i)
 			{
-				if (options.langTemplate[i] == toupper(input))
+				if (options.langTemplate[i] == input[0])
 				{
-					addUsed(toupper(char(input)));
+					addUsed(input[0]);
 					break;
 				}
 			}
@@ -279,7 +340,7 @@ View* FieldView::handle()
 			for (size_t i = 0; i < sizeOfWord; ++i)
 			{
 				word[i].letter = currWord[i];
-				word[i].active = true;
+				//word[i].active = true;
 				word[i].draw();
 			}
 

@@ -28,7 +28,7 @@ Options::Options(Language _lan, Difficulty dif)
 	easyUsed(false),
 	middleUsed(false),
 	hardUsed(false),
-	langTemplate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	langTemplate("abcdefghijklmnopqrstuvwxyz")
 {
 	dictionary = new Word[20];
 }
@@ -39,11 +39,11 @@ void Options::setLanguage(Language _lan)
 
 	if (language == Language::ENGLISH)
 	{
-		langTemplate = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		langTemplate = "abcdefghijklmnopqrstuvwxyz";
 	}
 	else
 	{
-		langTemplate = "ÀÁÂÃÄÅªÆÇÈ²¯ÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜŞß";
+		langTemplate = "àáâãäåºæçè³¿éêëìíîïğñòóôõö÷øùüşÿ";
 	}
 }
 
@@ -118,10 +118,12 @@ void Options::loadDictionary()
 			dictionary[i].chosen = false;
 		}
 
+		/*
 		for (size_t i = 1; i < numOfWords; ++i)
 		{
 			dictionary[i].chosen = true;
 		}
+		*/
 	}
 }
 
