@@ -14,7 +14,14 @@ void SideBar::draw()
 	drawBackground(left, top, width, height, RGB(0,0,100));
 
 	setCursorAt(left / FONT_WIDTH + 1, top / FONT_HEIGHT + 1);
-	stats.print("Life: " + string(25 - 6 - toString(life).size(), ' ') + toString(life));
+	if (life >= 0)
+	{
+		stats.print("Life: " + string(25 - 6 - toString(life).size(), ' ') + toString(life));
+	}
+	else
+	{
+		stats.print("Life: " + string(25 - 6 - toString("0").size(), ' ') + toString("0"));
+	}
 	setCursorAt(left/FONT_WIDTH + 1, top/FONT_HEIGHT + 3);
 	stats.print("Score: " + string(25 - 7 - toString(score).size(), ' ') + toString(score));
 	setCursorAt(left/FONT_WIDTH + 1, top/FONT_HEIGHT + 5);

@@ -73,7 +73,7 @@ public:
 
 	}
 
-	bool allGuessed();
+	bool allLettersGuessed();
 
 	void draw();
 

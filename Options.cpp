@@ -9,6 +9,23 @@
 
 using namespace std;
 
+void sortPlayers(vector<Player>& vec)
+{
+	for (size_t i = 0; i < vec.size(); ++i)
+	{
+		for (size_t j = 0; j < vec.size() - (i + 1); ++j)
+		{
+			if ((vec[j].score + 0.05*double(vec[j].numLetters)) <
+				(vec[j + 1].score + 0.05*double(vec[j + 1].numLetters)))
+			{
+				Player buffer = vec[j];
+				vec[j] = vec[j + 1];
+				vec[j + 1] = buffer;
+			}
+		}
+	}
+}
+
 Options::Word::Word(string _dat, bool _ch)
 	: data(_dat),
 	chosen(_ch)
@@ -20,6 +37,78 @@ string Options::Word::getText() const
 	return data; 
 }
 
+Player::Player(int _s, int let, Language _lang, Difficulty _dif, string _n)
+	: nickname(_n),
+	score(_s),
+	numLetters(let),
+	topLevel(_dif),
+	langUsed(_lang)
+{
+}
+
+ostream& operator<<(ostream& out, const Player& p)
+{
+	out << p.nickname << " " << p.score << " " << p.numLetters << " ";
+
+	if (p.langUsed == Language::ENGLISH)
+	{
+		out << " English ";
+	}
+	else
+	{
+		out << " Ukrainian ";
+	}
+
+	if (p.topLevel == Difficulty::EASY)
+	{
+		out << " easy ";
+	}
+	else if (p.topLevel == Difficulty::MIDDLE)
+	{
+		out << " middle ";
+	}
+	else
+	{
+		out << " hard ";
+	}
+
+	return out;
+}
+
+istream& operator>>(istream& in, Player& p)
+{
+	in >> p.nickname >> p.score >> p.numLetters;
+
+	string level;
+	string language;
+
+	in >> language >> level;
+
+	if (language == "English")
+	{
+		p.langUsed = Language::ENGLISH;
+	}
+	else
+	{
+		p.langUsed = Language::UKRAINIAN;
+	}
+
+	if (level == "easy")
+	{
+		p.topLevel = Difficulty::EASY;
+	}
+	else if (level == "middle")
+	{
+		p.topLevel = Difficulty::MIDDLE;
+	}
+	else
+	{
+		p.topLevel = Difficulty::HARD;
+	}
+
+	return in;
+}
+
 Options::Options(Language _lan, Difficulty dif)
 	: language(_lan),
 	level(dif),
@@ -28,9 +117,24 @@ Options::Options(Language _lan, Difficulty dif)
 	easyUsed(false),
 	middleUsed(false),
 	hardUsed(false),
-	langTemplate("abcdefghijklmnopqrstuvwxyz")
+	langTemplate("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 {
 	dictionary = new Word[20];
+
+	ifstream in("Records.txt");
+	Player buf;
+
+	while (in >> buf)
+	{
+		records.push_back(buf);
+	}
+
+	in.close();
+}
+
+vector<Player> Options::getRecords() const
+{
+	return records;
 }
 
 void Options::setLanguage(Language _lan)
@@ -39,11 +143,11 @@ void Options::setLanguage(Language _lan)
 
 	if (language == Language::ENGLISH)
 	{
-		langTemplate = "abcdefghijklmnopqrstuvwxyz";
+		langTemplate = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	}
 	else
 	{
-		langTemplate = "àáâãäåºæçè³¿éêëìíîïðñòóôõö÷øùüþÿ";
+		langTemplate = "ÀÁÂÃÄÅªÆÇÈ²¯ÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÞß";
 	}
 }
 
@@ -117,13 +221,6 @@ void Options::loadDictionary()
 			in >> dictionary[i];
 			dictionary[i].chosen = false;
 		}
-
-		/*
-		for (size_t i = 1; i < numOfWords; ++i)
-		{
-			dictionary[i].chosen = true;
-		}
-		*/
 	}
 }
 
@@ -187,6 +284,48 @@ string Options::chooseWord()
 
 	return toReturn;
 }
+
+void Options::addPlayer(Player pl)
+{
+	if (records.empty())
+	{
+		records.push_back(pl);
+	}
+	else
+	{
+		bool playerFound = false;
+
+		for (size_t i = 0; i < records.size(); ++i)
+		{
+			if (records[i].nickname == pl.nickname)
+			{
+				playerFound = true;
+				records[i] = pl;
+				break;
+			}
+		}
+
+		if (playerFound)
+		{
+			sortPlayers(records);
+		}
+		else
+		{
+			records.push_back(pl);
+			sortPlayers(records);
+		}
+		
+	}
+
+	ofstream out("Records.txt");
+
+	for (size_t i = 0; i < records.size(); ++i)
+	{
+		out << records[i] << endl;
+	}
+}
+
+
 
 bool Options::allChosen()
 {

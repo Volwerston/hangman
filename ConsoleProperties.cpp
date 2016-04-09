@@ -1,5 +1,7 @@
 #pragma once
 
+#include <conio.h>
+
 #include "ConsoleProperties.h"
 
 using namespace std;
@@ -81,4 +83,67 @@ void printAtCenter(string st, const Printer& p)
 	int x_pos = (CONSOLE_WIDTH - size) / 2 + (CONSOLE_WIDTH - size) % 2;
 	setCursorAt(x_pos, cursor.Y);
 	p.print(st);
+}
+
+string getUserTextInput(int len)
+{
+	SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE | BACKGROUND_RED);
+
+	bool properlyInserted = false;
+	int numOfFilled = 0;
+	string name;
+	int c;
+
+	int startCursorX = cursor.X;
+
+	while (!properlyInserted)
+	{
+		c = _getch();
+
+		if (c == ' ')
+		{
+			if (name != "" && numOfFilled < len)
+			{
+				name += ' ';
+				cout << " ";
+				cursor.X++;
+				numOfFilled++;
+			}
+		}
+		else if (c == VK_RETURN)
+		{
+			if (name != "")
+			{
+				properlyInserted = true;
+			}
+		}
+		else if (c == 8)
+		{
+			if (name != "")
+			{
+				name.erase(name.size() - 1, 1);
+				numOfFilled--;
+				cursor.X--;
+				SetConsoleCursorPosition(hConsole, cursor);
+				cout << " ";
+			}
+		}
+		else
+		{
+			if (numOfFilled < len)
+			{
+				numOfFilled++;
+				cursor.X++;
+				name += (char)c;
+				cout << (char)c;
+			}
+		}
+		if (name == "")
+		{
+			cursor.X = startCursorX;
+			SetConsoleCursorPosition(hConsole, cursor);
+		}
+	}
+
+	return name;
 }

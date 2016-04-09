@@ -1,6 +1,3 @@
-#include <iostream>
-#include <conio.h>
-
 #include "View.h"
 #include "StartView.h"
 #include "ConsoleProperties.h"
@@ -8,6 +5,7 @@
 #include "FieldView.h";
 #include "Options.h"
 #include "OptionView.h"
+#include "ResultView.h"
 
 using namespace std;
 
@@ -30,6 +28,5 @@ int main()
 		}
 	}
 
-	_getch();
 	return 0;
 }

@@ -13,6 +13,8 @@ void setCursorAt(int, int);
 
 void printAtCenter(string st, const Printer& p);
 
+string getUserTextInput(int);
+
 template<class T>
 string toString(const T& t)
 {

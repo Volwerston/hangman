@@ -85,5 +85,8 @@
     <Text Include="Ua_easy.txt" />
     <Text Include="Ua_hard.txt" />
     <Text Include="Ua_middle.txt" />
+    <Text Include="Records.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

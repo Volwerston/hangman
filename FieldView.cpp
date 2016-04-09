@@ -2,13 +2,125 @@
 
 #include <Windows.h>
 #include <conio.h>
+#include <cctype>
 
 #include "FieldView.h"
 #include "ConsoleProperties.h"
+#include "ResultView.h"
 
 using namespace std;
 
-string getUserNick()
+
+char getUkrCapital(char ch)
+{
+	char toReturn;
+	switch (ch)
+	{
+	case 'à':
+		toReturn = 'À';
+		break;
+	case 'á':
+		toReturn = 'Á';
+		break;
+	case 'â':
+		toReturn = 'Â';
+		break;
+	case 'ã':
+		toReturn = 'Ã';
+		break;
+	case 'ä':
+		toReturn = 'Ä';
+		break;
+	case 'å':
+		toReturn = 'Å';
+		break;
+	case 'º':
+		toReturn = 'ª';
+		break;
+	case 'æ':
+		toReturn = 'Æ';
+		break;
+	case 'ç':
+		toReturn = 'Ç';
+		break;
+	case 'è':
+		toReturn = 'È';
+		break;
+	case '³':
+		toReturn = '²';
+		break;
+	case '¿':
+		toReturn = '¯';
+		break;
+	case 'é':
+		toReturn = 'É';
+		break;
+	case 'ê':
+		toReturn = 'Ê';
+		break;
+	case 'ë':
+		toReturn = 'Ë';
+		break;
+	case 'ì':
+		toReturn = 'Ì';
+		break;
+	case 'í':
+		toReturn = 'Í';
+		break;
+	case 'î':
+		toReturn = 'Î';
+		break;
+	case 'ï':
+		toReturn = 'Ï';
+		break;
+	case 'ð':
+		toReturn = 'Ð';
+		break;
+	case 'ñ':
+		toReturn = 'Ñ';
+		break;
+	case 'ò':
+		toReturn = 'Ò';
+		break;
+	case 'ó':
+		toReturn = 'Ó';
+		break;
+	case 'ô':
+		toReturn = 'Ô';
+		break;
+	case 'õ':
+		toReturn = 'Õ';
+		break;
+	case 'ö':
+		toReturn = 'Ö';
+		break;
+	case '÷':
+		toReturn = '×';
+		break;
+	case 'ø':
+		toReturn = 'Ø';
+		break;
+	case 'ù':
+		toReturn = 'Ù';
+		break;
+	case 'ü':
+		toReturn = 'Ü';
+		break;
+	case 'þ':
+		toReturn = 'Þ';
+		break;
+	case 'ÿ':
+		toReturn = 'ß';
+		break;
+	default:
+		toReturn = ch;
+		break;
+	}
+
+	return toReturn;
+}
+
+char getUserNick()
 {
 	SetConsoleTextAttribute(hConsole, BACKGROUND_BLUE| BACKGROUND_RED);
 
@@ -69,7 +181,18 @@ string getUserNick()
 		}
 	}
 
-	return name;
+	char alt;
+
+	if (options.getLanguage() == Language::UKRAINIAN)
+	{
+		alt = getUkrCapital(name[0]);
+	}
+	else
+	{
+		alt = toupper(name[0]);
+	}
+
+	return alt;
 }
 
 void FieldView::draw()
@@ -122,7 +245,7 @@ FieldView::Letter::Letter(char _let, bool _gue, int _l, int _t, int _w, int _h)
 {
 }
 
-bool FieldView::allGuessed()
+bool FieldView::allLettersGuessed()
 {
 	bool all = true;
 
@@ -168,7 +291,6 @@ void FieldView::makeSettings()
 
 void FieldView::Letter::draw()
 {
-
 	SelectObject(hdc, GetStockObject(DC_PEN));
 	SelectObject(hdc, GetStockObject(DC_BRUSH));
 
@@ -183,40 +305,68 @@ void FieldView::Letter::draw()
 		setCursorAt((left + width / 2) / FONT_WIDTH, (top + height / 2) / FONT_HEIGHT);
 		letterPrint.print(letter);
 	}
+
+	if (options.getLevel() == Difficulty::EASY)
+	{
+		options.easyUsed = true;
+	}
+	else if (options.getLevel() == Difficulty::MIDDLE)
+	{
+		options.middleUsed = true;
+	}
+	else
+	{
+		options.hardUsed = true;
+	}
 }
 
 void FieldView::addUsed(char let)
 {
-	bool found = false;
+	bool letterFound = false;
 
-	for (size_t i = 0; i < numOfUsed; ++i)
+	for (size_t i = 0; i < sizeOfWord; ++i)
 	{
-		if (usedLetter[i / 10][i % 10].letter == let)
+		if (word[i].letter == let)
 		{
-			found = true;
-			break;
+			letterFound = true;
+
+			if (!word[i].active)
+			{
+				++info.numOfLetters;
+				word[i].active = true;
+				word[i].draw();
+			}
 		}
 	}
 
-	if (!found)
+
+	if (!letterFound)
 	{
-		usedLetter[numOfUsed / 10][numOfUsed % 10].letter = let;
-		usedLetter[numOfUsed / 10][numOfUsed % 10].active = true;
-		++numOfUsed;
+		bool alreadyAdded = false;
 
-		bool isRight = false;
-
-		for (size_t i = 0; i < sizeOfWord; ++i)
+		for (size_t i = 0; i < numOfUsed; ++i)
 		{
-			if (let == word[i].letter)
+			if (usedLetter[i / 10][i % 10].letter == let)
 			{
-				isRight = true;
+				alreadyAdded = true;
 				break;
 			}
 		}
 
-		if (!isRight)
+		if (!alreadyAdded)
 		{
+			for (size_t i = 0; i < options.langTemplate.size(); ++i)
+			{
+				if (options.langTemplate[i] == let)
+				{
+					usedLetter[numOfUsed / 10][numOfUsed % 10].letter = let;
+					usedLetter[numOfUsed / 10][numOfUsed % 10].active = true;
+					usedLetter[numOfUsed / 10][numOfUsed % 10].draw();
+					++numOfUsed;
+					break;
+				}
+			}
+
 			if (options.level == Difficulty::EASY)
 			{
 				info.life -= 3;
@@ -230,9 +380,9 @@ void FieldView::addUsed(char let)
 				--info.life;
 			}
 		}
-	}
 
-		usedLetter[(numOfUsed-1)/10][(numOfUsed-1) % 10].draw();
+
+	}
 }
 
 Result FieldView::getResult()
@@ -244,50 +394,37 @@ Result FieldView::getResult()
 	{
 		setCursorAt(50, 0);
 
-		string input = getUserNick();
+		char input = getUserNick();
 
 		bool found = false;
 
-		for (size_t i = 0; i < sizeOfWord; ++i)
-		{
-			if (word[i].letter == input[0])
-			{
-				found = true;
-
-				if (!word[i].active)
-				{
-					++info.numOfLetters;
-					word[i].active = true;
-					word[i].draw();
-					addUsed(input[0]);
-				}
-			}
-		}
-
-		if (found == false)
-		{
-			for (size_t i = 0; i < options.langTemplate.size(); ++i)
-			{
-				if (options.langTemplate[i] == input[0])
-				{
-					addUsed(input[0]);
-					break;
-				}
-			}
-		}
+		addUsed(input);
 
 		info.draw();
 
-		if (allGuessed())
+		if (allLettersGuessed())
 		{
-			cout << "You won" << endl;
+			info.numOfLetters = 0;
 			info.life += 3;
 			res = Result::VICTORY;
+
+			if (options.level == Difficulty::EASY)
+			{
+				++info.score;
+			}
+			else if (options.level == Difficulty::MIDDLE)
+			{
+				info.score += 2;
+			}
+			else
+			{
+				info.score += 3;
+			}
+
 			finished = true;
 		}
 		else if (info.life <= 0)
 		{
-			cout << "Defeat" << endl;
 			res = Result::DEFEAT;
 			finished = true;
 		}
@@ -302,35 +439,39 @@ View* FieldView::handle()
 
 	while (res != Result::DEFEAT)
 	{
-		info.numOfLetters = 0;
-		
-		if (options.level == Difficulty::EASY)
-		{
-			++info.score;
-		}
-		else if (options.level == Difficulty::MIDDLE)
-		{
-			info.score += 2;
-		}
-		else
-		{
-			info.score += 3;
-		}
-
 		info.draw();
+
+
 		Difficulty cur = options.getLevel();
 		string currWord = options.chooseWord();
 		Difficulty cur1 = options.getLevel();
+
+		for (size_t i = 0; i < sizeOfWord; ++i)
+		{
+			word[i].active = false;
+		}
 
 		if (cur != cur1)
 		{
 			drawBackground(word[0].left - 1, word[0].top - 1,
 				options.numOfWords * 51, word[0].top + 51, RGB(0, 100, 200));
+
+			if (options.getLevel() == Difficulty::EASY)
+			{
+				options.easyUsed = true;
+			}
+			else if (options.getLevel() == Difficulty::MIDDLE)
+			{
+				options.middleUsed = true;
+			}
+			else
+			{
+				options.hardUsed = true;
+			}
 		}
 
 		if (currWord == "")
 		{
-			cout << "All words are guessed!" << endl;
 			res = Result::DEFEAT;
 		}
 		else
@@ -360,5 +501,25 @@ View* FieldView::handle()
 		}
 	}
 
-	return nullptr;
+	Player toReturn;
+
+	toReturn.langUsed = options.getLanguage();
+
+	if (options.hardUsed)
+	{
+		toReturn.topLevel = Difficulty::HARD;
+	}
+	else if (options.middleUsed)
+	{
+		toReturn.topLevel = Difficulty::MIDDLE;
+	}
+	else
+	{
+		toReturn.topLevel = Difficulty::EASY;
+	}
+
+	toReturn.score = info.score;
+	toReturn.numLetters = info.numOfLetters;
+
+	return new ResultView(toReturn);
 }

@@ -9,6 +9,7 @@
 #include "OptionView.h"
 #include "SideBar.h"
 #include "FieldView.h"
+#include "HighScoreView.h"
 
 using namespace std;
 
@@ -88,6 +89,7 @@ View* StartView::handle()
 				finish = true;
 				break;
 			case Action::HIGH_SCORES:
+				current = new HighScoreView;
 				finish = true;
 				break;
 			case Action::EXIT:

@@ -1,0 +1,7 @@
+Cool_one 21 0  English  easy 
+Player3 7 1  English  easy 
+Тарас 6 3  Ukrainian  easy 
+Volwerston 6 0  English  easy 
+test 3 0  English  hard 
+Юра 2 1  Ukrainian  easy 
+Looser 0 1  English  easy 

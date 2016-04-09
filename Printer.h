@@ -5,6 +5,8 @@
 #include <Windows.h>
 #include <sstream>
 
+#include "ConsoleProperties.h"
+
 using namespace std;
 
 enum class Color
@@ -53,6 +55,10 @@ public:
 		ostringstream out;
 		out << text;
 		cout << out.str() << endl;
+
+		cursor.X += out.str().size();
+
+		setCursorAt(cursor.X, cursor.Y);
 
 		SetConsoleTextAttribute(hConsole, 15);  // return to normal state
 	}
