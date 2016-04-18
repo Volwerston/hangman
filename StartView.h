@@ -2,6 +2,7 @@
 
 #include <string>
 #include "View.h"
+#include "ConsoleProperties.h"
 
 using namespace std;
 
@@ -45,10 +46,20 @@ public:
 	StartView() 
 		: menuCurrent(0)
 	{
-		menu[0] = MenuItem("START GAME");
-		menu[1] = MenuItem("OPTIONS");
-		menu[2] = MenuItem("HIGH SCORES");
-		menu[3] = MenuItem("EXIT");
+		if (options.getLanguage() == Language::ENGLISH)
+		{
+			menu[0] = MenuItem("START GAME");
+			menu[1] = MenuItem("OPTIONS");
+			menu[2] = MenuItem("HIGH SCORES");
+			menu[3] = MenuItem("EXIT");
+		}
+		else
+		{
+			menu[0] = MenuItem("ÏÎ×ÀÒÈ ÃÐÓ");
+			menu[1] = MenuItem("ÎÏÖ²¯");
+			menu[2] = MenuItem("ÐÅÊÎÐÄÈ");
+			menu[3] = MenuItem("ÂÈÕ²Ä");
+		}
 		menu[0].chosen = true;
 	}
 

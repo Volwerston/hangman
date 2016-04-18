@@ -107,7 +107,15 @@ void StartView::draw()
 {
 	clear();
 	setCursorAt(CONSOLE_WIDTH / 3, 0);
-	headline.print("WELCOME TO HANGMAN");
+
+	if (options.getLanguage() == Language::ENGLISH)
+	{
+		headline.print("WELCOME TO HANGMAN");
+	}
+	else
+	{
+		headline.print("Â²ÒÀÞ Â ÃÐ² HANGMAN");
+	}
 
 	drawMenu();
 }

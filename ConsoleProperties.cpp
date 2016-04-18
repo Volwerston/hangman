@@ -96,6 +96,14 @@ string getUserTextInput(int len)
 
 	int startCursorX = cursor.X;
 
+	for (size_t i = 0; i < len; ++i)
+	{
+		cout << " ";
+	}
+
+	cursor.X = startCursorX;
+	setCursorAt(cursor.X, cursor.Y);
+
 	while (!properlyInserted)
 	{
 		c = _getch();
@@ -114,6 +122,14 @@ string getUserTextInput(int len)
 		{
 			if (name != "")
 			{
+				cursor.X = startCursorX;
+				setCursorAt(cursor.X, cursor.Y);
+
+				for (size_t i = 0; i < len; ++i)
+				{
+					cout << " ";
+				}
+
 				properlyInserted = true;
 			}
 		}
@@ -124,8 +140,19 @@ string getUserTextInput(int len)
 				name.erase(name.size() - 1, 1);
 				numOfFilled--;
 				cursor.X--;
-				SetConsoleCursorPosition(hConsole, cursor);
+
+				int beforeErase = cursor.X;
+				setCursorAt(cursor.X, cursor.Y);
 				cout << " ";
+
+				// may help ;)
+				for (size_t i = numOfFilled + 1; i < len; ++i)
+				{
+					cout << " ";
+				}
+
+				cursor.X = beforeErase;
+				setCursorAt(cursor.X, cursor.Y);
 			}
 		}
 		else
@@ -141,7 +168,7 @@ string getUserTextInput(int len)
 		if (name == "")
 		{
 			cursor.X = startCursorX;
-			SetConsoleCursorPosition(hConsole, cursor);
+			setCursorAt(cursor.X, cursor.Y);
 		}
 	}
 

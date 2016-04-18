@@ -11,6 +11,7 @@ class OptionView : public View
 	int menuCurrent;
 
 	void drawMenu();
+	void changeMenuItems();
 public:
 	OptionView();
 

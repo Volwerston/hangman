@@ -151,6 +151,11 @@ char getUserNick()
 			if (name != "")
 			{
 				properlyInserted = true;
+
+				cursor.X = startCursorX;
+				SetConsoleCursorPosition(hConsole, cursor);
+
+				cout << " ";
 			}
 		}
 		else if (c == 8)
@@ -204,7 +209,15 @@ void FieldView::draw()
 	info.draw();
 
 	setCursorAt(30, 0);
-	techData.print("INSERT A SYMBOL: ");
+
+	if (options.getLanguage() == Language::ENGLISH)
+	{
+		techData.print("INSERT A SYMBOL: ");
+	}
+	else
+	{
+		techData.print("ÂÂÅÄ²ÒÜ Ë²ÒÅÐÓ: ");
+	}
 
 	setCursorAt(CONSOLE_WIDTH / 10, CONSOLE_HEIGHT / 2);
 
@@ -214,7 +227,15 @@ void FieldView::draw()
 	}
 
 	setCursorAt(cursor.X, 2*CONSOLE_HEIGHT / 3 - 1);
-	printAtCenter("Used letters: ", headline);
+
+	if (options.getLanguage() == Language::ENGLISH)
+	{
+		printAtCenter("Used letters: ", headline);
+	}
+	else
+	{
+		printAtCenter("Âèêîðèñòàí³ ë³òåðè: ", headline);
+	}
 	
 	for (size_t i = 0; i < 4; ++i)
 	{
@@ -231,8 +252,6 @@ void FieldView::draw()
 		}
 	}
 	
-
-	// make _getch() for a letter ('s gonna be so funny)
 }
 
 FieldView::Letter::Letter(char _let, bool _gue, int _l, int _t, int _w, int _h)
@@ -481,7 +500,6 @@ View* FieldView::handle()
 			for (size_t i = 0; i < sizeOfWord; ++i)
 			{
 				word[i].letter = currWord[i];
-				//word[i].active = true;
 				word[i].draw();
 			}
 

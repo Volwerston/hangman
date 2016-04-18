@@ -2,6 +2,15 @@ Cool_one 21 0  English  easy
 Player3 7 1  English  easy 
 Тарас 6 3  Ukrainian  easy 
 Volwerston 6 0  English  easy 
+Yurik 4 1  English  easy 
+Анонімус 4 0  Ukrainian  easy 
 test 3 0  English  hard 
 Юра 2 1  Ukrainian  easy 
 Looser 0 1  English  easy 
+Markus 0 0  English  easy 
+Player1 0 0  English  easy 
+assadsdaasd 0 0  English  easy 
+sdflklskdlkfsd 0 0  English  easy 
+ds;'sfddsf 0 0  English  easy 
+d 0 0  Ukrainian  easy 
+sdfkfkdkkfkdjkj 0 0  English  easy 
